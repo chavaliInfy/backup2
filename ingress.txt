@@ -33,6 +33,7 @@ spec:
       targetPort: 8085
 #  type: ClusterIP
 *******************************************
+# ingress.yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
