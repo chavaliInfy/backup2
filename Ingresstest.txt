@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+name: ti-agastya-ingress
+namespace: agastya
+annotations:
+kubernetes.io/ingress.class: nginx
+nginx.ingress.kubernetes.io/ssl-redirect: "false"
+nginx.ingress.kubernetes.io/use-regex: "true"
+nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+rules:
+- http:
+paths:
+- path: /assist(.+)
+pathType: Prefix
+backend:
+service:
+name: vitalz-assist
+port:
+number: 80
+*********************************************
+
+apiVersion: v1
+kind: Service
+metadata:
+name: bollywood-svc
+spec:
+ports:
+- port: 80
+targetPort: 10010
+protocol: TCP
+selector:
+app: bollywood
+*************************************
+
+- path: /(.*)
+pathType: Prefix
+backend:
+service:
+name: assist
+port:
+number: 80
+
+
+
