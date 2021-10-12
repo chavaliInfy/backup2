@@ -1,0 +1,51 @@
+helm create helmpkg
+cd helmpkg
+/opt/helmpkg/templates
+vi deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helmpkg3-ak-angular-app-poc-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: helmpkg3-ak-angular-app
+  template:
+    metadata:
+      labels:
+        app: helmpkg3-ak-angular-app
+    spec:
+      containers:
+      - name: helmpkg3-ak-angular-app
+        image: 955470930558.dkr.ecr.us-east-2.amazonaws.com/ecr-dev-repo-jenkins-eks:latest
+        ports:
+        - containerPort: 8085
+
+*************************************
+vi service.yaml
+# service type loadbalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helmpkg3-ak-angular-svc
+spec:
+  selector:
+    app: helmpkg3-ak-angular-app
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085
+  type: LoadBalancer
+
+*******************************************************
+helm package helmpkg
+helm lint pkg3	
+helm package pkg3
+helm install angularhelmpkg3 /opt/ pkg3-0.1.0.tgz
+helm install helmpkg /opt/helmpkg-0.1.0.tgz
+helm lint helmpkg
+
+kubectl get svc
+
